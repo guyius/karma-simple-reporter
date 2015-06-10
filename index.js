@@ -47,5 +47,5 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
 SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
 
 module.exports = {
-  'reporter:wixKarmaReporter': ['type', SpecReporter]
+  'reporter:karmaSimpleReporter': ['type', SpecReporter]
 };
