@@ -1,53 +1,27 @@
 {
-  "name": "karma-spec-reporter",
-  "description": "A Karma plugin. Report all spec-results to console (like mocha's spec reporter).",
-  "version": "0.0.19",
-  "author": {
-    "name": "Michael Lex",
-    "email": "michael.lex@codecentric.de"
-  },
-  "homepage": "https://github.com/mlex/karma-spec-reporter",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mlex/karma-spec-reporter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mlex/karma-spec-reporter/issues"
-  },
+  "name": "karma-simple-reporter",
+  "version": "0.0.1",
+  "description": "Minimalist test reporter, that prints simple colorful results to the console.",
   "main": "index.js",
-  "dist": {
-    "tarball": "http://repoil.dev.wix/artifactory/api/npm/npm-repos/karma-spec-reporter/-/karma-spec-reporter-0.0.19.tgz",
-    "shasum": "d86b48df5108d615311d4c419ac4db7d68a7b021"
-  },
   "dependencies": {
-    "colors": "~0.6.0"
+    "colors": "^0.6.2",
+    "karma": "^0.12.36"
   },
-  "peerDependencies": {
-    "karma": ">=0.9"
-  },
-  "keywords": [
-    "karma-plugin",
-    "reporter"
-  ],
-  "license": "MIT",
-  "maintainers": [
-    {
-      "name": "mlex",
-      "email": "mich.lex@gmail.com"
-    }
-  ],
-  "directories": {},
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "_from": "karma-spec-reporter@*",
-  "_npmVersion": "1.4.28",
-  "_npmUser": {
-    "name": "mlex",
-    "email": "mich.lex@gmail.com"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guyius/karma-simple-reporter.git"
   },
-  "_id": "karma-spec-reporter@0.0.19",
-  "_shasum": "d86b48df5108d615311d4c419ac4db7d68a7b021",
-  "gitHead": "a045ed1b25fba61516ee04ccf9bcf736b02f4caf",
-  "_resolved": "http://repoil.dev.wix/artifactory/api/npm/npm-repos/karma-spec-reporter/-/karma-spec-reporter-0.0.19.tgz"
+  "keywords": [
+    "karma-plugin"
+  ],
+  "author": "guy-biton <gbiton@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guyius/karma-simple-reporter/issues"
+  },
+  "homepage": "https://github.com/guyius/karma-simple-reporter#readme"
 }
