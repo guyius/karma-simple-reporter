@@ -27,8 +27,8 @@ var SpecReporter = function(baseReporterDecorator, formatError, config) {
     errors.forEach(function(failure, index) {
       index = index + 1;
 		this.writeCommonMsg((index + ') ').grey) ;
-		this.writeCommonMsg(('IT => ' + failure.description +'\n').cyan);
-		this.writeCommonMsg(('DESCRIBE => ' + failure.suite + '\n').yellow);
+        this.writeCommonMsg(('DESCRIBE => ' + failure.suite + '\n').yellow);
+        this.writeCommonMsg(('IT => ' + failure.description +'\n').cyan);
 		this.writeCommonMsg(('ERROR => ' + failure.log + '\n').red);
     }, this);
 
