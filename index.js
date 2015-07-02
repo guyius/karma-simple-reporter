@@ -1,51 +1,49 @@
 'use strict';
 
-var SpecReporter = function (baseReporterDecorator, formatError, config) {
+var SpecReporter = function (baseReporterDecorator) {
   baseReporterDecorator(this);
 
   require('colors');
 
-  this.failures = [];
-  this.TOTAL_SUCCESS = '\n' + 'TOTAL: %d SUCCESS'.green;
-  this.TOTAL_FAILED = '\n' + 'TOTAL: %d FAILED'.red + ', ' +  '%d SUCCESS'.green;
+  var failures = [];
+  var TOTAL_SUCCESS = '\n' + 'TOTAL: %d SUCCESS'.green;
+  var TOTAL_FAILED = '\n' + 'TOTAL: %d FAILED'.red + ', ' +  '%d SUCCESS'.green;
 
   this.onRunComplete = function (browsers, results) {
     if (browsers.length >= 1 && !results.disconnected && !results.error) {
       if (!results.failed) {
-        this.write(this.TOTAL_SUCCESS, results.success);
+        this.write(TOTAL_SUCCESS, results.success);
       } else {
-        this.write(this.TOTAL_FAILED, results.failed, results.success);
-        this.logFinalErrors(this.failures);
+        this.write(TOTAL_FAILED, results.failed, results.success);
+        this._logFinalErrors(failures);
       }
     }
     this.write('\n');
-    this.failures = [];
+    failures = [];
   };
 
-  this.logFinalErrors = function (errors) {
-    this.writeCommonMsg('\n\n') ;
+  this._logFinalErrors = function (errors) {
+    this.write('\n\n') ;
 
     errors.forEach(function (failure, index) {
       index = index + 1;
-      this.writeCommonMsg((index + ') ').grey) ;
-      this.writeCommonMsg(('DESCRIBE => ' + failure.suite + '\n').yellow);
-      this.writeCommonMsg(('IT => ' + failure.description + '\n').cyan);
-      this.writeCommonMsg(('ERROR => ' + failure.log + '\n').red);
+      this.write((index + ') \n').grey) ;
+      this.write(('DESCRIBE => ' + failure.suite + '\n').yellow);
+      this.write(('IT => ' + failure.description + '\n').cyan);
+      this.write(('ERROR => ' + failure.log + '\n').red);
     }, this);
 
-    this.writeCommonMsg('\n\n') ;
+    this.write('\n\n') ;
   };
 
-  var reporterCfg = config.specReporter || {};
-  function noop() {}
-  this.onSpecFailure = function (browsers, results) {
-    this.failures.push(results);
+  this.onSpecComplete = function (browser, result) {
+    if (result.success === false) {
+      failures.push(result);
+    }
   };
-
-  this.specFailure = reporterCfg.suppressFailed ? noop : this.onSpecFailure;
 };
 
-SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
+SpecReporter.$inject = ['baseReporterDecorator'];
 
 module.exports = {
   'reporter:karmaSimpleReporter': ['type', SpecReporter]
