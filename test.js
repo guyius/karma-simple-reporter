@@ -23,10 +23,9 @@ describe('Simple Reporter', function () {
     reporter.onSpecComplete('phantom', {suite: ['a'], description: 'b', log: 'c', success: false});
     reporter.onRunComplete(['phantom'], {failed: 1, success: 0});
     assert.equal(output, '\n' + 'TOTAL: 1 FAILED'.red + ', ' + '0 SUCCESS'.green + '\n\n' +
-                 '1) \n'.grey +
                  'DESCRIBE => a\n'.yellow +
-                 'IT => b\n'.cyan +
-                 'ERROR => c\n'.red +
+                 '  IT => b\n'.cyan +
+                 '    ERROR => c\n'.red +
                  '\n\n\n');
   });
 
@@ -34,10 +33,23 @@ describe('Simple Reporter', function () {
     reporter.onSpecComplete('phantom', {suite: ['a', 'x'], description: 'b', log: 'c', success: false});
     reporter.onRunComplete(['phantom'], {failed: 1, success: 0});
     assert.equal(output, '\n' + 'TOTAL: 1 FAILED'.red + ', ' + '0 SUCCESS'.green + '\n\n' +
-                 '1) \n'.grey +
-                 'DESCRIBE => a,x\n'.yellow +
-                 'IT => b\n'.cyan +
-                 'ERROR => c\n'.red +
+                 'DESCRIBE => a\n'.yellow +
+                 '  DESCRIBE => x\n'.yellow +
+                 '    IT => b\n'.cyan +
+                 '      ERROR => c\n'.red +
+                 '\n\n\n');
+  });
+
+  it('should merge errors under same suite', function () {
+    reporter.onSpecComplete('phantom', {suite: ['a'], description: 'b1', log: 'c', success: false});
+    reporter.onSpecComplete('phantom', {suite: ['a'], description: 'b2', log: 'c', success: false});
+    reporter.onRunComplete(['phantom'], {failed: 2, success: 0});
+    assert.equal(output, '\n' + 'TOTAL: 2 FAILED'.red + ', ' + '0 SUCCESS'.green + '\n\n' +
+                 'DESCRIBE => a\n'.yellow +
+                 '  IT => b1\n'.cyan +
+                 '    ERROR => c\n'.red +
+                 '  IT => b2\n'.cyan +
+                 '    ERROR => c\n'.red +
                  '\n\n\n');
   });
 
