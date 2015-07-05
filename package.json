@@ -7,9 +7,11 @@
     "colors": "^0.6.2",
     "karma": "^0.12.36"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "$(npm bin mocha)/mocha test.js"
   },
   "repository": {
     "type": "git",

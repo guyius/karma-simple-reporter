@@ -1,50 +1,54 @@
+'use strict';
 
-var SpecReporter = function(baseReporterDecorator, formatError, config) {
+var SpecReporter = function (baseReporterDecorator) {
   baseReporterDecorator(this);
 
   require('colors');
 
-  this.failures = [];
-  this.TOTAL_SUCCESS = '\n' + 'TOTAL: %d SUCCESS'.green;
-  this.TOTAL_FAILED = '\n' + 'TOTAL: %d FAILED'.red + ', ' +  '%d SUCCESS'.green;
+  var failures = {tests: [], suites: {}};
+  var TOTAL_SUCCESS = '\n' + 'TOTAL: %d SUCCESS'.green;
+  var TOTAL_FAILED = '\n' + 'TOTAL: %d FAILED'.red + ', ' +  '%d SUCCESS'.green;
 
-  this.onRunComplete = function(browsers, results) {
+  this.onRunComplete = function (browsers, results) {
     if (browsers.length >= 1 && !results.disconnected && !results.error) {
       if (!results.failed) {
-        this.write(this.TOTAL_SUCCESS, results.success);
+        this.write(TOTAL_SUCCESS, results.success);
       } else {
-        this.write(this.TOTAL_FAILED, results.failed, results.success);
-        this.logFinalErrors(this.failures);
+        this.write(TOTAL_FAILED, results.failed, results.success);
+        this.write('\n\n') ;
+        this._logFinalErrors(failures);
+        this.write('\n\n') ;
       }
     }
-    this.write("\n");
-    this.failures = [];
+    this.write('\n');
+    failures = {tests: [], suites: {}};
   };
 
-  this.logFinalErrors = function(errors) {
-    this.writeCommonMsg('\n\n') ;
-
-    errors.forEach(function(failure, index) {
-      index = index + 1;
-		this.writeCommonMsg((index + ') ').grey) ;
-        this.writeCommonMsg(('DESCRIBE => ' + failure.suite + '\n').yellow);
-        this.writeCommonMsg(('IT => ' + failure.description +'\n').cyan);
-		this.writeCommonMsg(('ERROR => ' + failure.log + '\n').red);
+  this._logFinalErrors = function (failures, prefix) {
+    prefix = prefix || '';
+    failures.tests.forEach(function (failure) {
+      this.write((prefix + 'IT => ' + failure.description + '\n').cyan);
+      this.write((prefix + '  ERROR => ' + failure.log + '\n').red);
     }, this);
-
-    this.writeCommonMsg('\n\n') ;
+    Object.keys(failures.suites).forEach(function (suite) {
+      this.write((prefix + 'DESCRIBE => ' + suite + '\n').yellow);
+      this._logFinalErrors(failures.suites[suite], prefix + '  ');
+    }, this);
   };
 
-  var reporterCfg = config.specReporter || {};
-  function noop(){}
-  this.onSpecFailure = function(browsers, results) {
-    this.failures.push(results);
-  };
+  this.onSpecComplete = function (browser, result) {
+    if (result.success === false) {
+      var current = failures;
 
-  this.specFailure = reporterCfg.suppressFailed ? noop : this.onSpecFailure;
+      result.suite.forEach(function (suite) {
+        current = current.suites[suite] = current.suites[suite] || {tests: [], suites: {}};
+      }, this);
+      current.tests.push(result);
+    }
+  };
 };
 
-SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
+SpecReporter.$inject = ['baseReporterDecorator'];
 
 module.exports = {
   'reporter:karmaSimpleReporter': ['type', SpecReporter]
