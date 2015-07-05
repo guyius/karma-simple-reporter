@@ -1,6 +1,6 @@
 {
   "name": "karma-simple-reporter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimalist test reporter, that prints simple colorful results to the console.",
   "main": "index.js",
   "dependencies": {
