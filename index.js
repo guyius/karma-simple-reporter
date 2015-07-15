@@ -28,7 +28,9 @@ var SpecReporter = function (baseReporterDecorator) {
     prefix = prefix || '';
     failures.tests.forEach(function (failure) {
       this.write((prefix + 'IT => ' + failure.description + '\n').cyan);
-      this.write((prefix + '  ERROR => ' + failure.log + '\n').red);
+      failure.log.forEach(function (log) {
+        this.write((prefix + '  ERROR => ' + log + '\n').red);
+      }, this);
     }, this);
     Object.keys(failures.suites).forEach(function (suite) {
       this.write((prefix + 'DESCRIBE => ' + suite + '\n').yellow);
