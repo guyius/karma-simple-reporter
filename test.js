@@ -88,4 +88,18 @@ describe('Simple Reporter', function () {
     assert.equal(output, '\n');
   });
 
+  it('should not fail if suite name has reserved keywords', function () {
+    reporter.onSpecComplete('phantom', {suite: ['constructor'], description: 'd1', log: ['l1'], success: false});
+    reporter.onSpecComplete('phantom', {suite: ['toString'], description: 'd2', log: ['l2'], success: false});
+    reporter.onRunComplete(['phantom'], {failed: 2, success: 0});
+    assert.equal(output, '\n' + 'TOTAL: 2 FAILED'.red + ', ' + '0 SUCCESS'.green + '\n\n' +
+                 'DESCRIBE => constructor\n'.yellow +
+                 '  IT => d1\n'.cyan +
+                 '    ERROR => l1\n'.red +
+                 'DESCRIBE => toString\n'.yellow +
+                 '  IT => d2\n'.cyan +
+                 '    ERROR => l2\n'.red +
+                 '\n\n\n');
+  });
+
 });
