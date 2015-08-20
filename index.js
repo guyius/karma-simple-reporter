@@ -33,7 +33,7 @@ var SpecReporter = function (baseReporterDecorator) {
       }, this);
     }, this);
     Object.keys(failures.suites).forEach(function (suite) {
-      this.write((prefix + 'DESCRIBE => ' + suite + '\n').yellow);
+      this.write((prefix + 'DESCRIBE => ' + fromKey(suite) + '\n').yellow);
       this._logFinalErrors(failures.suites[suite], prefix + '  ');
     }, this);
   };
@@ -43,11 +43,22 @@ var SpecReporter = function (baseReporterDecorator) {
       var current = failures;
 
       result.suite.forEach(function (suite) {
-        current = current.suites[suite] = current.suites[suite] || {tests: [], suites: {}};
+        current = current.suites[toKey(suite)] = current.suites[toKey(suite)] || {tests: [], suites: {}};
       }, this);
       current.tests.push(result);
     }
   };
+
+  var KEY_PREFIX = '$$';
+
+  function toKey(forValue) {
+    return KEY_PREFIX + forValue;
+  }
+
+  function fromKey(forValue) {
+    return forValue.substring(KEY_PREFIX.length);
+  }
+
 };
 
 SpecReporter.$inject = ['baseReporterDecorator'];
