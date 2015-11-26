@@ -3,8 +3,7 @@
  [![Build Status](https://travis-ci.org/guyius/karma-simple-reporter.svg)](https://travis-ci.org/guyius/karma-simple-reporter)
 >Minimalist Karma test reporter, that prints simple colorful results to the console.
 
-
- ## Configuration
+## Configuration
 ``` js
 //karma.conf.js
 ...
