@@ -11,7 +11,7 @@
     "mocha": "^2.2.5"
   },
   "scripts": {
-    "test": "$(npm bin mocha)/mocha test.js"
+    "test": "$(npm bin mocha)/mocha ./tests/*.test.js"
   },
   "repository": {
     "type": "git",
