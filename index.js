@@ -172,3 +172,4 @@ SpecReporter.$inject = ['baseReporterDecorator', 'formatError', 'config'];
 module.exports = {
   'reporter:karmaSimpleReporter': ['type', SpecReporter]
 };
+
